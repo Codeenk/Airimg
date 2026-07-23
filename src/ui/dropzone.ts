@@ -3,7 +3,7 @@ import { ACCEPTED_TYPES, MAX_FILE_SIZE } from '../types/index.js';
 
 export function createDropzone(
   container: HTMLElement,
-  onFile: (file: File) => void,
+  onFiles: (files: File[]) => void,
   onError: (error: AppError) => void
 ): { destroy: () => void } {
   /* Outer shell — positions both the backlight and the clipped border wrapper */
@@ -25,27 +25,33 @@ export function createDropzone(
   zone.className = 'dropzone';
   zone.innerHTML = `
     <div class="dropzone-content">
-      <h3 class="dropzone-heading">Drop image here</h3>
+      <h3 class="dropzone-heading">Drop image(s) here</h3>
       <p class="dropzone-subheading">or <span class="dropzone-browse">browse files</span> from your computer</p>
-      <p class="dropzone-specs font-mono">PNG, JPEG, WebP, GIF, BMP, TIFF &middot; Max 25MB</p>
+      <p class="dropzone-specs font-mono">PNG, JPEG, WebP, GIF, BMP, TIFF &middot; Batch processing &middot; Max 25MB per file</p>
     </div>
-    <input type="file" id="file-input" accept="${ACCEPTED_TYPES.join(',')}" hidden />
+    <input type="file" id="file-input" accept="${ACCEPTED_TYPES.join(',')}" multiple hidden />
   `;
 
   wrapper.appendChild(zone);
 
   const fileInput = zone.querySelector('#file-input') as HTMLInputElement;
 
-  function validateAndEmit(file: File) {
-    if (!ACCEPTED_TYPES.includes(file.type as typeof ACCEPTED_TYPES[number])) {
-      onError({ code: 'BAD_FILE_TYPE', message: `Unsupported file type: ${file.type || 'unknown'}. Please upload an image.` });
-      return;
+  function validateAndEmit(files: File[]) {
+    const validFiles: File[] = [];
+    for (const file of files) {
+      if (!ACCEPTED_TYPES.includes(file.type as typeof ACCEPTED_TYPES[number])) {
+        onError({ code: 'BAD_FILE_TYPE', message: `Skipping unsupported file type: ${file.name} (${file.type || 'unknown'})` });
+        continue;
+      }
+      if (file.size > MAX_FILE_SIZE) {
+        onError({ code: 'FILE_TOO_LARGE', message: `Skipping ${file.name}: ${(file.size / 1024 / 1024).toFixed(1)}MB exceeds 25MB max.` });
+        continue;
+      }
+      validFiles.push(file);
     }
-    if (file.size > MAX_FILE_SIZE) {
-      onError({ code: 'FILE_TOO_LARGE', message: `File is ${(file.size / 1024 / 1024).toFixed(1)}MB. Maximum allowed is 25MB.` });
-      return;
+    if (validFiles.length > 0) {
+      onFiles(validFiles);
     }
-    onFile(file);
   }
 
   function handleDragOver(e: DragEvent) {
@@ -67,8 +73,10 @@ export function createDropzone(
     e.stopPropagation();
     zone.classList.remove('dropzone--active');
     shell.classList.remove('shell--active');
-    const file = e.dataTransfer?.files[0];
-    if (file) validateAndEmit(file);
+    const droppedFiles = e.dataTransfer?.files;
+    if (droppedFiles && droppedFiles.length > 0) {
+      validateAndEmit(Array.from(droppedFiles));
+    }
   }
 
   function handleClick() {
@@ -76,8 +84,10 @@ export function createDropzone(
   }
 
   function handleFileChange() {
-    const file = fileInput.files?.[0];
-    if (file) validateAndEmit(file);
+    const selectedFiles = fileInput.files;
+    if (selectedFiles && selectedFiles.length > 0) {
+      validateAndEmit(Array.from(selectedFiles));
+    }
     fileInput.value = '';
   }
 
