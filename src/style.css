@@ -107,15 +107,21 @@ body {
   -webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 40%, #000 35%, transparent 100%);
 }
 
-/* ---- Cursive Logo Typography (Text-Only) ---- */
+/* ---- Cursive Logo Typography (Text-Only Animated RGB + LED Glow) ---- */
 .logo-air {
   font-family: var(--font-cursive);
   font-size: 2.35rem;
   font-weight: 700;
   line-height: 1;
-  background: var(--gradient-cursive);
+  background: linear-gradient(
+    90deg,
+    #ff0055, #ff7700, #ffea00, #00ff66, #00e5ff, #7000ff, #ff00cc, #ff0055
+  );
+  background-size: 300% 100%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  animation: rgbTextFlow 6s linear infinite;
+  filter: drop-shadow(0 0 8px rgba(255, 0, 128, 0.45)) drop-shadow(0 0 16px rgba(0, 229, 255, 0.3));
   display: inline-block;
   transform: rotate(-3deg);
   margin-right: 1px;
@@ -133,11 +139,22 @@ body {
   font-family: var(--font-cursive);
   font-size: 4.25rem;
   font-weight: 700;
-  background: var(--gradient-cursive);
+  background: linear-gradient(
+    90deg,
+    #ff0055, #ff7700, #ffea00, #00ff66, #00e5ff, #7000ff, #ff00cc, #ff0055
+  );
+  background-size: 300% 100%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  animation: rgbTextFlow 6s linear infinite;
+  filter: drop-shadow(0 0 14px rgba(255, 0, 128, 0.5)) drop-shadow(0 0 28px rgba(0, 229, 255, 0.35));
   display: inline-block;
   transform: rotate(-3deg);
+}
+
+@keyframes rgbTextFlow {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 300% 50%; }
 }
 
 /* ---- Header / Navbar ---- */
@@ -342,60 +359,60 @@ body {
   margin-bottom: 5.5rem;
 }
 
-/* ---- Lifted Dropzone with Moving RGB Spectrum Border ---- */
+/* ---- Lifted Dropzone with Moving RGB Spectrum Border & Ambient LED Backlight ---- */
 .dropzone-rgb-wrapper {
   position: relative;
   border-radius: var(--radius-lg);
   padding: 2px;
   background: transparent;
-  overflow: hidden;
-  box-shadow: 0 24px 60px -16px rgba(0, 0, 0, 0.95);
   transform: translateY(-2px);
   transition: transform var(--duration-normal) var(--ease-out);
 }
 
-/* Glowing RGB Blur Layer Behind */
-.dropzone-rgb-wrapper::before {
-  content: '';
+/* Radiating Hardware LED Backlight Aura */
+.dropzone-led-backlight {
   position: absolute;
-  inset: -200%;
+  inset: -28px;
+  border-radius: calc(var(--radius-lg) + 20px);
   background: conic-gradient(
     from 0deg,
-    #ff0000 0deg,
-    #ff7700 45deg,
-    #ffff00 90deg,
-    #00ff00 135deg,
-    #00ffff 180deg,
-    #0077ff 225deg,
-    #8b5cf6 270deg,
-    #ec4899 315deg,
-    #ff0000 360deg
+    #ff0055 0deg,
+    #ff5500 45deg,
+    #ffea00 90deg,
+    #00ff66 135deg,
+    #00e5ff 180deg,
+    #7000ff 225deg,
+    #ff00cc 270deg,
+    #ff0055 360deg
   );
   animation: rgbRotate 8s linear infinite;
-  opacity: 0.65;
-  filter: blur(14px);
-  transition: opacity var(--duration-normal) var(--ease-out);
+  filter: blur(36px);
+  opacity: 0.8;
+  pointer-events: none;
+  z-index: 0;
+  transition: all var(--duration-normal) var(--ease-out);
 }
 
-/* Crisp Moving RGB Border Line */
+/* Crisp Moving RGB Border Stroke Container */
 .dropzone-rgb-wrapper::after {
   content: '';
   position: absolute;
   inset: -150%;
+  border-radius: var(--radius-lg);
   background: conic-gradient(
     from 0deg,
-    #ff0000 0deg,
-    #ff7700 45deg,
-    #ffff00 90deg,
-    #00ff00 135deg,
-    #00ffff 180deg,
-    #0077ff 225deg,
-    #8b5cf6 270deg,
-    #ec4899 315deg,
-    #ff0000 360deg
+    #ff0055 0deg,
+    #ff5500 45deg,
+    #ffea00 90deg,
+    #00ff66 135deg,
+    #00e5ff 180deg,
+    #7000ff 225deg,
+    #ff00cc 270deg,
+    #ff0055 360deg
   );
   animation: rgbRotate 8s linear infinite;
-  opacity: 0.85;
+  opacity: 0.95;
+  z-index: 1;
 }
 
 .dropzone-rgb-wrapper:hover,
@@ -403,10 +420,11 @@ body {
   transform: translateY(-5px);
 }
 
-.dropzone-rgb-wrapper:hover::before,
-.wrapper--active::before {
-  opacity: 0.9;
-  filter: blur(18px);
+.dropzone-rgb-wrapper:hover .dropzone-led-backlight,
+.wrapper--active .dropzone-led-backlight {
+  opacity: 1;
+  filter: blur(48px);
+  inset: -36px;
 }
 
 @keyframes rgbRotate {

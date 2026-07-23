@@ -9,6 +9,10 @@ export function createDropzone(
   const wrapper = document.createElement('div');
   wrapper.className = 'dropzone-rgb-wrapper';
 
+  const backlight = document.createElement('div');
+  backlight.className = 'dropzone-led-backlight';
+  wrapper.appendChild(backlight);
+
   const zone = document.createElement('div');
   zone.id = 'dropzone';
   zone.className = 'dropzone';
