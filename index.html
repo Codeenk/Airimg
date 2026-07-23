@@ -3,28 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Airimg — Instant image hotlinks stored directly in your personal Google Drive." />
-  <title>Airimg — Instant Image Hotlinks</title>
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <meta name="description" content="Airimg - Ultra-fast, privacy-first WebP image compressor and hotlink generator backed by your Google Drive storage." />
+  <title>Airimg &middot; Instant Google Drive Image Hotlinks</title>
+
+  <!-- Google Fonts: Inter & Dancing Script for cursive logo -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
   <link rel="stylesheet" href="/src/style.css" />
 </head>
 <body>
-  <div id="app">
-    <!-- Fading Broken & Unbroken Architectural Grid Overlay -->
-    <div class="grid-background" aria-hidden="true"></div>
+  <!-- Fading Broken & Unbroken Grid Background -->
+  <div class="grid-background" aria-hidden="true"></div>
 
-    <!-- Floating Glass Header -->
+  <div id="app" class="app-container">
     <header class="header">
       <a href="#" class="header-brand">
-        <h1 class="header-title">
-          <span class="logo-air">Air</span><span class="logo-img">img</span>
-        </h1>
+        <span class="logo-air">Air</span><span class="logo-img">img</span>
       </a>
-      <nav class="header-nav">
+
+      <nav class="nav">
         <a href="#capabilities" class="nav-link">Capabilities</a>
         <a href="#workflow" class="nav-link">Workflow</a>
         <a href="#faq" class="nav-link">FAQ</a>
@@ -35,7 +34,6 @@
     <main class="main">
       <!-- Hero Section -->
       <section id="hero" class="hero">
-        <div class="hero-kicker font-mono">01 / WORKBENCH</div>
         <h2 class="hero-title">
           Instant image hotlinks in <span class="logo-air-hero">Air</span> speed.<br/>
           <span class="hero-accent">Stored directly in your Drive.</span>
@@ -57,32 +55,27 @@
       <!-- Capabilities Section -->
       <section id="capabilities" class="landing-section">
         <div class="section-header">
-          <span class="section-kicker font-mono">02 / ARCHITECTURE</span>
           <h3 class="section-title">Engineered for speed, built for privacy</h3>
           <p class="section-subtitle">No central database. No subscription fees. No third-party image tracking.</p>
         </div>
 
         <div class="capabilities-grid">
           <div class="capability-card">
-            <span class="capability-number font-mono">01</span>
             <h4 class="capability-title">Client-Side WebP Engine</h4>
             <p class="capability-desc">Re-encodes images directly in your browser to WebP at 80% quality, reducing file size by up to 90% before uploading.</p>
           </div>
 
           <div class="capability-card">
-            <span class="capability-number font-mono">02</span>
             <h4 class="capability-title">Metadata Privacy Scrubbing</h4>
             <p class="capability-desc">Canvas pixel extraction automatically discards camera model, GPS coordinates, timestamps, and EXIF tags.</p>
           </div>
 
           <div class="capability-card">
-            <span class="capability-number font-mono">03</span>
             <h4 class="capability-title">Bring Your Own Storage</h4>
             <p class="capability-desc">Files are saved directly to your personal Google Drive (`drive.file` scope). You retain 100% ownership and free storage.</p>
           </div>
 
           <div class="capability-card">
-            <span class="capability-number font-mono">04</span>
             <h4 class="capability-title">Self-Healing Edge Network</h4>
             <p class="capability-desc">Cloudflare Worker edge layer routes requests with a 4-tier failover mechanism to maintain 99.99% image uptime.</p>
           </div>
@@ -92,25 +85,21 @@
       <!-- Workflow Section -->
       <section id="workflow" class="landing-section">
         <div class="section-header">
-          <span class="section-kicker font-mono">03 / WORKFLOW</span>
           <h3 class="section-title">Three steps to permanent URLs</h3>
         </div>
 
         <div class="workflow-grid">
           <div class="workflow-card">
-            <span class="workflow-step font-mono">STEP 01</span>
             <h4 class="workflow-title">Connect Drive</h4>
             <p class="workflow-desc">Sign in with Google OAuth. Grants access strictly to files created by Airimg.</p>
           </div>
 
           <div class="workflow-card">
-            <span class="workflow-step font-mono">STEP 02</span>
             <h4 class="workflow-title">Drop & Compress</h4>
             <p class="workflow-desc">Drop images up to 25MB. Browser scales edges >2560px and encodes to WebP.</p>
           </div>
 
           <div class="workflow-card">
-            <span class="workflow-step font-mono">STEP 03</span>
             <h4 class="workflow-title">Copy Hotlink</h4>
             <p class="workflow-desc">Copy your permanent `https://img.airimg.<domain>/i/<ID>` URL and embed anywhere.</p>
           </div>
@@ -120,7 +109,6 @@
       <!-- FAQ Section -->
       <section id="faq" class="landing-section">
         <div class="section-header">
-          <span class="section-kicker font-mono">04 / FAQ</span>
           <h3 class="section-title">Frequently Asked Questions</h3>
         </div>
 
@@ -153,7 +141,7 @@
         <div class="footer-brand">
           <span class="logo-air">Air</span><span class="logo-img">img</span>
         </div>
-        <p class="footer-copy">&copy; 2026 Airimg &middot; Monochrome Precision Engineering.</p>
+        <p class="footer-copy">&copy; 2026 Airimg &middot; Precision Engineering.</p>
       </div>
     </footer>
   </div>
