@@ -1,7 +1,7 @@
 import type { HotlinkResult, CompressResult } from '../types/index.js';
 
 export function createResultPanel(container: HTMLElement): {
-  show: (hotlink: HotlinkResult, compression: CompressResult) => void;
+  show: (hotlink: HotlinkResult, compression: CompressResult, previewUrl?: string) => void;
   hide: () => void;
   destroy: () => void;
 } {
@@ -13,11 +13,14 @@ export function createResultPanel(container: HTMLElement): {
   container.appendChild(panel);
 
   return {
-    show(hotlink: HotlinkResult, compression: CompressResult) {
+    show(hotlink: HotlinkResult, compression: CompressResult, previewUrl?: string) {
       const ratioVal = ((1 - compression.compressedSize / compression.originalSize) * 100);
       const ratio = ratioVal > 0 ? ratioVal.toFixed(0) : '0';
       const compressedKB = (compression.compressedSize / 1024).toFixed(1);
       const originalKB = (compression.originalSize / 1024).toFixed(1);
+
+      // Use client blob preview URL first, fallback to direct worker URL
+      const displaySrc = previewUrl || hotlink.fallbackWorkerUrl;
 
       panel.innerHTML = `
         <div class="result-card">
@@ -38,9 +41,9 @@ export function createResultPanel(container: HTMLElement): {
 
           <div class="result-card-body">
             <div class="result-thumbnail-wrapper">
-              <img src="${hotlink.directDriveUrl}" alt="Uploaded image" class="result-thumbnail-img" loading="lazy" />
+              <img src="${displaySrc}" alt="Uploaded preview" class="result-thumbnail-img" id="result-img-element" />
               <div class="thumbnail-overlay">
-                <a href="${hotlink.directDriveUrl}" target="_blank" class="btn-icon-overlay" title="View Full Image">
+                <a href="${hotlink.fallbackWorkerUrl}" target="_blank" class="btn-icon-overlay" title="View Full Image">
                   <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
                     <circle cx="11" cy="11" r="8"/>
                     <line x1="21" y1="21" x2="16.65" y2="16.65"/>
@@ -128,6 +131,14 @@ export function createResultPanel(container: HTMLElement): {
           </div>
         </div>
       `;
+
+      // Fallback image error handler
+      const imgEl = panel.querySelector('#result-img-element') as HTMLImageElement;
+      if (imgEl) {
+        imgEl.onerror = () => {
+          imgEl.src = hotlink.fallbackWorkerUrl;
+        };
+      }
 
       // Copy buttons handler
       panel.querySelectorAll('.btn-copy').forEach((btn) => {

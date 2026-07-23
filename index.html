@@ -8,38 +8,56 @@
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <link rel="stylesheet" href="/src/style.css" />
 </head>
 <body>
   <div id="app">
+    <!-- Floating Glass Header -->
     <header class="header">
       <div class="header-brand">
-        <svg class="header-logo" viewBox="0 0 32 32" width="32" height="32" fill="none">
+        <svg class="header-logo" viewBox="0 0 32 32" width="36" height="36" fill="none">
           <defs>
             <linearGradient id="logo-grad" x1="0" y1="0" x2="32" y2="32">
               <stop offset="0%" stop-color="#6366f1"/>
-              <stop offset="100%" stop-color="#a855f7"/>
+              <stop offset="50%" stop-color="#a855f7"/>
+              <stop offset="100%" stop-color="#ec4899"/>
             </linearGradient>
           </defs>
-          <rect width="32" height="32" rx="8" fill="url(#logo-grad)"/>
-          <path d="M8 22l5-7 4 5 3-4 4 6H8z" fill="rgba(255,255,255,0.9)"/>
-          <circle cx="21" cy="12" r="2.5" fill="rgba(255,255,255,0.85)"/>
+          <rect width="32" height="32" rx="10" fill="url(#logo-grad)"/>
+          <path d="M8 22l5-7 4 5 3-4 4 6H8z" fill="rgba(255,255,255,0.95)"/>
+          <circle cx="21" cy="12" r="2.5" fill="rgba(255,255,255,0.9)"/>
         </svg>
-        <h1 class="header-title">Airimg</h1>
+        <h1 class="header-title">
+          <span class="logo-air">Air</span><span class="logo-img">img</span>
+        </h1>
       </div>
       <nav class="header-nav">
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#how-it-works" class="nav-link">How it works</a>
+        <a href="#faq" class="nav-link">FAQ</a>
         <button id="auth-btn" class="btn btn-auth">Sign in with Google</button>
       </nav>
     </header>
 
     <main class="main">
+      <!-- Hero Section -->
       <section id="hero" class="hero">
-        <h2 class="hero-title">Instant image hotlinks.<br/><span class="hero-accent">Powered by your Drive.</span></h2>
-        <p class="hero-subtitle">Drag an image in, get a permanent embeddable link back. Compressed to WebP, stripped of metadata, stored in your own Google Drive.</p>
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          <span>Zero Server Costs &middot; 100% Private</span>
+        </div>
+        <h2 class="hero-title">
+          Instant hotlinks in <span class="logo-air-hero">Air</span> speed.<br/>
+          <span class="hero-accent">Stored in your own Drive.</span>
+        </h2>
+        <p class="hero-subtitle">
+          Drag an image, get a permanent embeddable hotlink back. Auto-compressed to WebP, stripped of EXIF & GPS metadata, and saved directly to your Google Drive.
+        </p>
       </section>
 
+      <!-- Main Interactive Workspace -->
       <section id="workspace" class="workspace">
         <!-- Dropzone, progress, and result panels injected here by JS -->
       </section>
@@ -48,10 +66,129 @@
         <p id="error-message" class="error-message"></p>
         <button id="error-dismiss" class="btn btn-ghost">Dismiss</button>
       </section>
+
+      <!-- Section: Key Benefits & Features -->
+      <section id="features" class="landing-section">
+        <div class="section-header">
+          <span class="section-tag font-mono">BENEFITS</span>
+          <h3 class="section-title">Engineered for speed, built for privacy</h3>
+          <p class="section-subtitle">No app database, no paid cloud storage, no image tracking.</p>
+        </div>
+
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon-box">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+              </svg>
+            </div>
+            <h4 class="feature-title">Client-Side WebP Engine</h4>
+            <p class="feature-desc">Re-encodes images to WebP at 80% quality in your browser. Saves up to 90% bandwidth without server roundtrips.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon-box feature-icon-box--emerald">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+            </div>
+            <h4 class="feature-title">100% EXIF & GPS Scrubbing</h4>
+            <p class="feature-desc">Re-encoding extracts raw canvas pixels, automatically destroying camera model, location, and timestamp metadata.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon-box feature-icon-box--purple">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+              </svg>
+            </div>
+            <h4 class="feature-title">Bring Your Own Storage</h4>
+            <p class="feature-desc">Files upload directly to your personal Google Drive (`drive.file` scope). You retain full ownership and 15GB+ free space.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon-box feature-icon-box--pink">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="m4.93 4.93 4.24 4.24"/>
+                <path d="m14.83 9.17 4.24-4.24"/>
+                <path d="m14.83 14.83 4.24 4.24"/>
+                <path d="m9.17 14.83-4.24 4.24"/>
+              </svg>
+            </div>
+            <h4 class="feature-title">Self-Healing Edge Network</h4>
+            <p class="feature-desc">Cloudflare Worker edge layer monitors public endpoints and automatically fails over to authenticated APIs on outages.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: 3-Step Workflow -->
+      <section id="how-it-works" class="landing-section">
+        <div class="section-header">
+          <span class="section-tag font-mono">WORKFLOW</span>
+          <h3 class="section-title">How Airimg Works</h3>
+          <p class="section-subtitle">Three steps to permanent, embeddable image URLs.</p>
+        </div>
+
+        <div class="steps-grid">
+          <div class="step-card">
+            <span class="step-number">01</span>
+            <h4 class="step-title">Connect Google Drive</h4>
+            <p class="step-desc">Sign in with Google OAuth using standard PKCE. Grants access only to files created by Airimg.</p>
+          </div>
+
+          <div class="step-card">
+            <span class="step-number">02</span>
+            <h4 class="step-title">Drag & Drop Image</h4>
+            <p class="step-desc">Drop any image up to 25MB. Browser instantly scales down >2560px edges and encodes to WebP.</p>
+          </div>
+
+          <div class="step-card">
+            <span class="step-number">03</span>
+            <h4 class="step-title">Get Hotlink URL</h4>
+            <p class="step-desc">Copy your permanent `https://img.airimg.<domain>/i/<ID>` URL and embed anywhere on the web.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: FAQ Accordion -->
+      <section id="faq" class="landing-section">
+        <div class="section-header">
+          <span class="section-tag font-mono">FREQUENTLY ASKED QUESTIONS</span>
+          <h3 class="section-title">Everything you need to know</h3>
+        </div>
+
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary class="faq-question">Can Airimg access my existing Google Drive files?</summary>
+            <p class="faq-answer">No. Airimg strictly requests the `drive.file` OAuth scope. This scope only permits access to files uploaded by Airimg itself. It cannot read, list, or touch your existing documents or photos.</p>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-question">Are there any subscription fees or storage limits?</summary>
+            <p class="faq-answer">Airimg is 100% free with no monthly fees. Images are saved to your personal Google Drive, giving you full control over your 15GB+ storage quota.</p>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-question">How does EXIF & GPS metadata stripping work?</summary>
+            <p class="faq-answer">Before sending any byte over the network, your browser loads the image onto an HTML5 Canvas and re-encodes pixel values into a WebP blob. This process discards all camera model, location, and metadata tags.</p>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-question">What happens if Google hotlink endpoints break?</summary>
+            <p class="faq-answer">Airimg's Cloudflare Worker features a built-in circuit breaker and 4-tier self-healing fallback system (Path A → Path B → Path C → Path D) so your image links stay online even if Google's public hotlink endpoint degrades.</p>
+          </details>
+        </div>
+      </section>
     </main>
 
     <footer class="footer">
-      <p>&copy; 2026 Airimg &middot; Your images, your Drive, your links.</p>
+      <div class="footer-content">
+        <div class="footer-brand">
+          <span class="logo-air">Air</span><span class="logo-img">img</span>
+        </div>
+        <p>&copy; 2026 Airimg &middot; Your images, your Drive, your permanent hotlinks.</p>
+      </div>
     </footer>
   </div>
   <script type="module" src="/src/main.ts"></script>

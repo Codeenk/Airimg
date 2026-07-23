@@ -1,4 +1,4 @@
-import { isSignedIn, initiateSignIn, signOut, handleAuthCallback } from './auth/google-auth.js';
+import { isSignedIn, initiateSignIn, signOut } from './auth/google-auth.js';
 import { compressImage } from './compress/image-compressor.js';
 import { uploadToDrive } from './upload/drive-upload.js';
 import { setPublicPermission } from './upload/drive-permissions.js';
@@ -71,7 +71,7 @@ async function handleFile(file: File) {
   if (isProcessing) return;
 
   if (!isSignedIn()) {
-    showError({ code: 'NOT_SIGNED_IN', message: 'Please sign in with Google first.' });
+    showError({ code: 'NOT_SIGNED_IN', message: 'Please click "Sign in with Google" at the top right to authenticate your Drive before uploading.' });
     return;
   }
 
@@ -80,12 +80,14 @@ async function handleFile(file: File) {
   resultPanel.hide();
   progress.show();
 
+  let previewUrl = '';
   try {
     // Stage 1: Compress
     progress.update({ stage: 'compressing', percent: 10, message: `Compressing ${file.name}…` });
     let compressResult: CompressResult;
     try {
       compressResult = await compressImage(file);
+      previewUrl = URL.createObjectURL(compressResult.blob);
     } catch (e) {
       throw { code: 'COMPRESS_FAILED', message: (e as AppError).message || 'Compression failed' } satisfies AppError;
     }
@@ -112,7 +114,7 @@ async function handleFile(file: File) {
     // Done!
     progress.update({ stage: 'done', percent: 100, message: 'Image uploaded and linked!' });
     progress.hide();
-    resultPanel.show(hotlink, compressResult);
+    resultPanel.show(hotlink, compressResult, previewUrl);
 
   } catch (e) {
     const appError = (e as AppError).code
@@ -127,14 +129,6 @@ async function handleFile(file: File) {
 // ---- Init ----
 async function init() {
   updateAuthUI();
-
-  // Handle OAuth callback
-  if (window.location.search.includes('code=')) {
-    const tokens = await handleAuthCallback();
-    if (tokens) {
-      updateAuthUI();
-    }
-  }
 }
 
 init();
