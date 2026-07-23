@@ -10,25 +10,10 @@ export function createDropzone(
   zone.id = 'dropzone';
   zone.className = 'dropzone';
   zone.innerHTML = `
-    <div class="dropzone-glow"></div>
     <div class="dropzone-content">
-      <div class="dropzone-icon-container">
-        <svg class="dropzone-icon" viewBox="0 0 24 24" width="54" height="54" fill="none" stroke="currentColor" stroke-width="1.6">
-          <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242" />
-          <path d="M12 12v9" />
-          <path d="m16 16-4-4-4 4" />
-        </svg>
-      </div>
-      <h3 class="dropzone-heading">Drop your image here</h3>
-      <p class="dropzone-subheading">or <span class="dropzone-browse">browse files</span> from your device</p>
-      
-      <div class="dropzone-features">
-        <span class="feature-tag">⚡ Instant WebP Compress</span>
-        <span class="feature-tag">🛡️ EXIF / GPS Stripped</span>
-        <span class="feature-tag">☁️ Direct to Drive</span>
-      </div>
-
-      <p class="dropzone-specs">PNG, JPEG, WebP, GIF, BMP, TIFF &middot; Max 25MB pre-compression cap</p>
+      <h3 class="dropzone-heading">Drop image here</h3>
+      <p class="dropzone-subheading">or <span class="dropzone-browse">browse files</span> from your computer</p>
+      <p class="dropzone-specs font-mono">PNG, JPEG, WebP, GIF, BMP, TIFF &middot; Max 25MB</p>
     </div>
     <input type="file" id="file-input" accept="${ACCEPTED_TYPES.join(',')}" hidden />
   `;
