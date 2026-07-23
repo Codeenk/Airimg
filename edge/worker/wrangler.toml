@@ -1,0 +1,16 @@
+name = "airimg-worker"
+main = "src/index.ts"
+compatibility_date = "2024-09-23"
+
+[[kv_namespaces]]
+binding = "BREAKER_KV"
+id = "PLACEHOLDER_KV_ID"
+preview_id = "PLACEHOLDER_PREVIEW_KV_ID"
+
+[triggers]
+crons = ["*/5 * * * *"]
+
+# Secrets (set via `wrangler secret put`, never committed):
+# - SERVICE_ACCOUNT_KEY
+# - WEBHOOK_URL
+# - HEALTH_TEST_FILE_ID
