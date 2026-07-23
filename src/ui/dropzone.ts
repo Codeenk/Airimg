@@ -6,6 +6,9 @@ export function createDropzone(
   onFile: (file: File) => void,
   onError: (error: AppError) => void
 ): { destroy: () => void } {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'dropzone-rgb-wrapper';
+
   const zone = document.createElement('div');
   zone.id = 'dropzone';
   zone.className = 'dropzone';
@@ -17,6 +20,8 @@ export function createDropzone(
     </div>
     <input type="file" id="file-input" accept="${ACCEPTED_TYPES.join(',')}" hidden />
   `;
+
+  wrapper.appendChild(zone);
 
   const fileInput = zone.querySelector('#file-input') as HTMLInputElement;
 
@@ -36,18 +41,21 @@ export function createDropzone(
     e.preventDefault();
     e.stopPropagation();
     zone.classList.add('dropzone--active');
+    wrapper.classList.add('wrapper--active');
   }
 
   function handleDragLeave(e: DragEvent) {
     e.preventDefault();
     e.stopPropagation();
     zone.classList.remove('dropzone--active');
+    wrapper.classList.remove('wrapper--active');
   }
 
   function handleDrop(e: DragEvent) {
     e.preventDefault();
     e.stopPropagation();
     zone.classList.remove('dropzone--active');
+    wrapper.classList.remove('wrapper--active');
     const file = e.dataTransfer?.files[0];
     if (file) validateAndEmit(file);
   }
@@ -68,7 +76,7 @@ export function createDropzone(
   zone.addEventListener('click', handleClick);
   fileInput.addEventListener('change', handleFileChange);
 
-  container.appendChild(zone);
+  container.appendChild(wrapper);
 
   return {
     destroy() {
@@ -77,7 +85,7 @@ export function createDropzone(
       zone.removeEventListener('drop', handleDrop);
       zone.removeEventListener('click', handleClick);
       fileInput.removeEventListener('change', handleFileChange);
-      zone.remove();
+      wrapper.remove();
     },
   };
 }

@@ -1,36 +1,34 @@
 /* ============================================================
-   AIRIMG — Huashu Design System Architecture
-   Pure Obsidian Dark Mode & Precision Non-AI Slop Typography
+   AIRIMG — High-Contrast Monochrome & Architectural Grid Theme
+   Pure Black & White Aesthetic with Moving RGB Dropzone Border
    ============================================================ */
 
-/* ---- Color Tokens & Design Variables ---- */
+/* ---- Color Tokens & Variables ---- */
 :root {
-  /* Surface Tokens */
-  --bg-dark: #06070b;
-  --bg-surface: #0d1017;
-  --bg-surface-raised: #141924;
-  --bg-surface-hover: #1b2230;
-  --bg-glass: rgba(13, 16, 23, 0.85);
+  /* Pitch Black & Carbon Surfaces */
+  --bg-dark: #040406;
+  --bg-surface: #0a0a0d;
+  --bg-surface-raised: #121217;
+  --bg-surface-hover: #191921;
+  --bg-glass: rgba(10, 10, 13, 0.88);
 
   /* Hairline Borders */
   --border-subtle: rgba(255, 255, 255, 0.07);
-  --border-medium: rgba(255, 255, 255, 0.12);
-  --border-focus: #8b5cf6;
+  --border-medium: rgba(255, 255, 255, 0.14);
+  --border-focus: #ffffff;
 
-  /* Typography Colors */
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
+  /* Pure White & Silver Typography */
+  --text-primary: #ffffff;
+  --text-secondary: #a1a1aa;
+  --text-muted: #52525b;
 
-  /* Brand Accents */
-  --color-violet: #8b5cf6;
-  --color-pink: #ec4899;
+  /* Accents */
   --color-emerald: #10b981;
   --color-rose: #f43f5e;
 
-  /* Signature Gradients */
-  --gradient-cursive: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
-  --gradient-brand: linear-gradient(135deg, #8b5cf6 0%, #a855f7 50%, #ec4899 100%);
+  /* Metallic Silver Gradient for Cursive Logo */
+  --gradient-cursive: linear-gradient(135deg, #ffffff 0%, #a1a1aa 100%);
+  --gradient-brand: linear-gradient(135deg, #ffffff 0%, #d4d4d8 100%);
 
   /* Typography Stacks */
   --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -45,8 +43,7 @@
   --radius-full: 9999px;
 
   /* Precision Shadows */
-  --shadow-card: 0 16px 40px -16px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.07);
-  --shadow-hover: 0 20px 50px -16px rgba(139, 92, 246, 0.25), 0 0 0 1px rgba(139, 92, 246, 0.4);
+  --shadow-card: 0 16px 44px -16px rgba(0, 0, 0, 0.95), 0 0 0 1px rgba(255, 255, 255, 0.08);
 
   /* Animation Easings */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -93,6 +90,21 @@ body {
 
 .font-mono {
   font-family: var(--font-mono);
+}
+
+/* ---- Fading Broken & Unbroken Grid Background ---- */
+.grid-background {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: 60px 60px, 60px 60px, 20px 20px;
+  mask-image: radial-gradient(ellipse 75% 65% at 50% 40%, #000 35%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 40%, #000 35%, transparent 100%);
 }
 
 /* ---- Cursive Logo Typography (Text-Only) ---- */
@@ -190,19 +202,20 @@ body {
 }
 
 .btn:focus-visible {
-  outline: 2px solid var(--color-violet);
+  outline: 2px solid var(--text-primary);
   outline-offset: 2px;
 }
 
 .btn-primary {
-  background: var(--gradient-brand);
-  color: #ffffff;
-  box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
+  background: #ffffff;
+  color: #000000;
+  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.2);
 }
 
 .btn-primary:hover {
   transform: translateY(-1px);
-  box-shadow: 0 6px 28px rgba(236, 72, 153, 0.4);
+  background: #e4e4e7;
+  box-shadow: 0 6px 24px rgba(255, 255, 255, 0.35);
 }
 
 .btn-secondary {
@@ -225,7 +238,7 @@ body {
 
 .btn-auth:hover {
   background: var(--bg-surface-hover);
-  border-color: var(--color-violet);
+  border-color: var(--text-primary);
 }
 
 .btn-auth--signed-in {
@@ -265,7 +278,7 @@ body {
 
 .btn-copy:hover {
   color: var(--text-primary);
-  border-color: var(--color-violet);
+  border-color: var(--text-primary);
 }
 
 .btn-copy--copied {
@@ -295,7 +308,7 @@ body {
 .hero-kicker {
   font-size: 0.75rem;
   font-weight: 700;
-  color: var(--color-violet);
+  color: var(--text-secondary);
   letter-spacing: 0.12em;
   margin-bottom: 1rem;
 }
@@ -329,23 +342,93 @@ body {
   margin-bottom: 5.5rem;
 }
 
-/* ---- Dropzone ---- */
+/* ---- Lifted Dropzone with Moving RGB Spectrum Border ---- */
+.dropzone-rgb-wrapper {
+  position: relative;
+  border-radius: var(--radius-lg);
+  padding: 2px;
+  background: transparent;
+  overflow: hidden;
+  box-shadow: 0 24px 60px -16px rgba(0, 0, 0, 0.95);
+  transform: translateY(-2px);
+  transition: transform var(--duration-normal) var(--ease-out);
+}
+
+/* Glowing RGB Blur Layer Behind */
+.dropzone-rgb-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: -200%;
+  background: conic-gradient(
+    from 0deg,
+    #ff0000 0deg,
+    #ff7700 45deg,
+    #ffff00 90deg,
+    #00ff00 135deg,
+    #00ffff 180deg,
+    #0077ff 225deg,
+    #8b5cf6 270deg,
+    #ec4899 315deg,
+    #ff0000 360deg
+  );
+  animation: rgbRotate 8s linear infinite;
+  opacity: 0.65;
+  filter: blur(14px);
+  transition: opacity var(--duration-normal) var(--ease-out);
+}
+
+/* Crisp Moving RGB Border Line */
+.dropzone-rgb-wrapper::after {
+  content: '';
+  position: absolute;
+  inset: -150%;
+  background: conic-gradient(
+    from 0deg,
+    #ff0000 0deg,
+    #ff7700 45deg,
+    #ffff00 90deg,
+    #00ff00 135deg,
+    #00ffff 180deg,
+    #0077ff 225deg,
+    #8b5cf6 270deg,
+    #ec4899 315deg,
+    #ff0000 360deg
+  );
+  animation: rgbRotate 8s linear infinite;
+  opacity: 0.85;
+}
+
+.dropzone-rgb-wrapper:hover,
+.wrapper--active {
+  transform: translateY(-5px);
+}
+
+.dropzone-rgb-wrapper:hover::before,
+.wrapper--active::before {
+  opacity: 0.9;
+  filter: blur(18px);
+}
+
+@keyframes rgbRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
 .dropzone {
   position: relative;
-  border: 1px dashed var(--border-medium);
-  border-radius: var(--radius-lg);
+  z-index: 2;
+  background: var(--bg-surface);
+  border-radius: calc(var(--radius-lg) - 2px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   padding: 4.5rem 2rem;
   text-align: center;
   cursor: pointer;
-  background: var(--bg-surface);
-  box-shadow: var(--shadow-card);
-  transition: all var(--duration-normal) var(--ease-out);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.8);
+  transition: background var(--duration-normal) var(--ease-out);
 }
 
 .dropzone:hover,
 .dropzone--active {
-  border-color: var(--color-violet);
-  box-shadow: var(--shadow-hover);
   background: var(--bg-surface-raised);
 }
 
@@ -370,7 +453,7 @@ body {
 }
 
 .dropzone-browse {
-  color: var(--color-violet);
+  color: var(--text-primary);
   font-weight: 700;
   text-decoration: underline;
   text-underline-offset: 3px;
@@ -407,8 +490,8 @@ body {
 .progress-spinner {
   width: 20px;
   height: 20px;
-  border: 2px solid rgba(139, 92, 246, 0.2);
-  border-top-color: var(--color-violet);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-top-color: var(--text-primary);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -423,7 +506,7 @@ body {
   font-family: var(--font-mono);
   font-size: 1.15rem;
   font-weight: 700;
-  color: var(--color-pink);
+  color: var(--text-primary);
 }
 
 .progress-bar-track {
@@ -467,9 +550,9 @@ body {
 }
 
 .step-badge--active {
-  color: var(--color-violet);
-  border-color: rgba(139, 92, 246, 0.4);
-  background: rgba(139, 92, 246, 0.12);
+  color: var(--text-primary);
+  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .step-badge--done {
@@ -583,7 +666,7 @@ body {
 }
 
 .stat-card--accent .stat-value {
-  color: var(--color-violet);
+  color: var(--text-primary);
 }
 
 .stat-card--success .stat-value {
@@ -632,7 +715,7 @@ body {
   border: 1px solid var(--border-medium);
   border-radius: var(--radius-xs);
   padding: 0.5rem 0.875rem;
-  color: var(--color-violet);
+  color: var(--text-primary);
   font-family: var(--font-mono);
   font-size: 0.8125rem;
   outline: none;
@@ -680,7 +763,7 @@ body {
 .section-kicker {
   font-size: 0.75rem;
   font-weight: 700;
-  color: var(--color-violet);
+  color: var(--text-secondary);
   letter-spacing: 0.12em;
   display: block;
   margin-bottom: 0.5rem;
@@ -716,13 +799,13 @@ body {
 }
 
 .capability-card:hover {
-  border-color: var(--color-violet);
+  border-color: var(--text-primary);
 }
 
 .capability-number {
   font-size: 0.8125rem;
   font-weight: 700;
-  color: var(--color-violet);
+  color: var(--text-secondary);
   display: block;
   margin-bottom: 1rem;
 }
@@ -810,7 +893,7 @@ body {
 .faq-question::after {
   content: '+';
   font-size: 1.25rem;
-  color: var(--color-violet);
+  color: var(--text-primary);
   font-family: var(--font-mono);
 }
 
