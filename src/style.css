@@ -183,6 +183,7 @@ body {
   align-items: baseline;
 }
 
+.nav,
 .header-nav {
   display: flex;
   align-items: center;
