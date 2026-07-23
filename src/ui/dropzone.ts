@@ -6,12 +6,19 @@ export function createDropzone(
   onFile: (file: File) => void,
   onError: (error: AppError) => void
 ): { destroy: () => void } {
-  const wrapper = document.createElement('div');
-  wrapper.className = 'dropzone-rgb-wrapper';
+  /* Outer shell — positions both the backlight and the clipped border wrapper */
+  const shell = document.createElement('div');
+  shell.className = 'dropzone-shell';
 
+  /* LED backlight glow — sits OUTSIDE the clipped wrapper so it can bleed outward */
   const backlight = document.createElement('div');
   backlight.className = 'dropzone-led-backlight';
-  wrapper.appendChild(backlight);
+  shell.appendChild(backlight);
+
+  /* RGB border wrapper — overflow:hidden clips the spinning conic gradient to a thin border */
+  const wrapper = document.createElement('div');
+  wrapper.className = 'dropzone-rgb-wrapper';
+  shell.appendChild(wrapper);
 
   const zone = document.createElement('div');
   zone.id = 'dropzone';
@@ -45,21 +52,21 @@ export function createDropzone(
     e.preventDefault();
     e.stopPropagation();
     zone.classList.add('dropzone--active');
-    wrapper.classList.add('wrapper--active');
+    shell.classList.add('shell--active');
   }
 
   function handleDragLeave(e: DragEvent) {
     e.preventDefault();
     e.stopPropagation();
     zone.classList.remove('dropzone--active');
-    wrapper.classList.remove('wrapper--active');
+    shell.classList.remove('shell--active');
   }
 
   function handleDrop(e: DragEvent) {
     e.preventDefault();
     e.stopPropagation();
     zone.classList.remove('dropzone--active');
-    wrapper.classList.remove('wrapper--active');
+    shell.classList.remove('shell--active');
     const file = e.dataTransfer?.files[0];
     if (file) validateAndEmit(file);
   }
@@ -80,7 +87,7 @@ export function createDropzone(
   zone.addEventListener('click', handleClick);
   fileInput.addEventListener('change', handleFileChange);
 
-  container.appendChild(wrapper);
+  container.appendChild(shell);
 
   return {
     destroy() {
@@ -89,7 +96,7 @@ export function createDropzone(
       zone.removeEventListener('drop', handleDrop);
       zone.removeEventListener('click', handleClick);
       fileInput.removeEventListener('change', handleFileChange);
-      wrapper.remove();
+      shell.remove();
     },
   };
 }
