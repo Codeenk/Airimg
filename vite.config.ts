@@ -8,6 +8,13 @@ export default defineConfig({
     target: 'es2023',
     sourcemap: true,
     minify: 'esbuild',
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'index.html'),
+        privacy: resolve(__dirname, 'privacy.html'),
+        terms: resolve(__dirname, 'terms.html'),
+      },
+    },
   },
   resolve: {
     alias: {

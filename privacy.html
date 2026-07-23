@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Privacy Policy for Airimg - Learn how we process your images and handle your Google Drive data." />
+  <title>Privacy Policy &middot; Airimg</title>
+
+  <!-- Google Fonts: Plus Jakarta Sans, Caveat for cursive logo, and JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+  <div class="grid-background" aria-hidden="true"></div>
+
+  <div class="app-container">
+    <header class="header">
+      <a href="/" class="header-brand">
+        <span class="logo-air">Air</span><span class="logo-img">img</span>
+      </a>
+      <nav class="nav">
+        <a href="/" class="nav-link">← Back to App</a>
+      </nav>
+    </header>
+
+    <main class="main legal-page">
+      <section class="landing-section">
+        <div class="section-header">
+          <h2 class="section-title">Privacy Policy</h2>
+          <p class="section-subtitle">Last updated: July 23, 2026</p>
+        </div>
+
+        <div class="legal-content">
+          <article class="legal-card">
+            <h3>1. Overview & Commitment to Privacy</h3>
+            <p>Airimg is designed around a zero-trust, client-side-first architecture. We do not operate central servers storing user images, personal credentials, or tracking telemetry. Your privacy and data ownership are our fundamental priorities.</p>
+          </article>
+
+          <article class="legal-card">
+            <h3>2. Google OAuth & Drive Scope (`drive.file`)</h3>
+            <p>Airimg connects to your Google Drive account using Google OAuth 2.0. We strictly request the narrow <strong>`https://www.googleapis.com/auth/drive.file`</strong> scope.</p>
+            <ul>
+              <li>Airimg only has access to files created or uploaded by Airimg itself.</li>
+              <li>Airimg <strong>cannot read, list, modify, or delete</strong> any existing files or folders in your personal Google Drive.</li>
+              <li>Your OAuth access tokens are stored strictly in your browser's local storage and are never uploaded to any centralized database.</li>
+            </ul>
+          </article>
+
+          <article class="legal-card">
+            <h3>3. Client-Side Compression & EXIF Stripping</h3>
+            <p>All image processing, WebP re-encoding, and EXIF metadata stripping occur directly inside your browser via HTML5 Canvas prior to upload.</p>
+            <ul>
+              <li>Camera metadata, EXIF tags, timestamps, and GPS location coordinates are permanently removed client-side.</li>
+              <li>Uncompressed raw files never leave your local device. Only the processed WebP file is transmitted directly from your browser to Google Drive APIs.</li>
+            </ul>
+          </article>
+
+          <article class="legal-card">
+            <h3>4. Cloudflare Worker Edge Proxy</h3>
+            <p>To serve public image hotlinks (`https://img.airimg.airlabs.eu.cc/i/<FILE_ID>`), Airimg utilizes a stateless Cloudflare Worker proxy layer.</p>
+            <ul>
+              <li>The Worker acts solely as a stateless reverse proxy to stream public Google Drive image assets.</li>
+              <li>The Worker does not record user IP addresses, track request histories, or store persistent copies of your images.</li>
+            </ul>
+          </article>
+
+          <article class="legal-card">
+            <h3>5. Local Storage Vault</h3>
+            <p>Airimg uses your browser's standard <code>localStorage</code> to store your upload history (Hotlink Vault) for convenience. This data remains on your local machine and can be cleared at any time using the "Clear All" button in the application interface.</p>
+          </article>
+
+          <article class="legal-card">
+            <h3>6. Contact Information</h3>
+            <p>If you have questions or feedback regarding this Privacy Policy, feel free to submit an issue on our official <a href="https://github.com/Codeenk/Airimg" target="_blank">GitHub Repository</a>.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <a href="/" class="header-brand">
+            <span class="logo-air">Air</span><span class="logo-img">img</span>
+          </a>
+        </div>
+        <div class="footer-links">
+          <a href="/privacy.html" class="footer-link">Privacy Policy</a>
+          <a href="/terms.html" class="footer-link">Terms of Service</a>
+        </div>
+        <p class="footer-copy">&copy; 2026 Airimg &middot; Made with ❤️ by Airlabs.</p>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
