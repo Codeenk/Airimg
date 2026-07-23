@@ -5,7 +5,7 @@ import { setPublicPermission } from './upload/drive-permissions.js';
 import { buildHotlink } from './url/hotlink-builder.js';
 import { createDropzone } from './ui/dropzone.js';
 import { createProgressPanel } from './ui/progress.js';
-import { createResultPanel } from './ui/result-panel.js';
+import { createResultPanel, type ResultItem } from './ui/result-panel.js';
 import { createHistoryPanel } from './ui/history-panel.js';
 import { saveHistoryItem } from './storage/history-store.js';
 import type { AppError, CompressResult } from './types/index.js';
@@ -84,9 +84,7 @@ async function handleFiles(files: File[]) {
   progress.show();
 
   const total = files.length;
-  let lastHotlink = null;
-  let lastCompressResult: CompressResult | null = null;
-  let lastPreviewUrl = '';
+  const completedItems: ResultItem[] = [];
 
   for (let i = 0; i < total; i++) {
     const file = files[i];
@@ -96,9 +94,10 @@ async function handleFiles(files: File[]) {
       // Stage 1: Compress
       progress.update({ stage: 'compressing', percent: (i / total) * 100 + 10 / total, message: `${itemPrefix}Compressing ${file.name}…` });
       let compressResult: CompressResult;
+      let previewUrl = '';
       try {
         compressResult = await compressImage(file);
-        lastPreviewUrl = URL.createObjectURL(compressResult.blob);
+        previewUrl = URL.createObjectURL(compressResult.blob);
       } catch (e) {
         throw { code: 'COMPRESS_FAILED', message: (e as AppError).message || `Compression failed for ${file.name}` } satisfies AppError;
       }
@@ -135,8 +134,12 @@ async function handleFiles(files: File[]) {
       // Update UI Vault Panel
       historyPanel.render();
 
-      lastHotlink = hotlink;
-      lastCompressResult = compressResult;
+      completedItems.push({
+        hotlink,
+        compression: compressResult,
+        previewUrl,
+        fileName: file.name,
+      });
 
     } catch (e) {
       const appError = (e as AppError).code
@@ -147,11 +150,11 @@ async function handleFiles(files: File[]) {
     }
   }
 
-  // Done!
-  if (lastHotlink && lastCompressResult) {
-    progress.update({ stage: 'done', percent: 100, message: total > 1 ? `Batch upload complete (${total} files)` : 'Image uploaded and linked!' });
+  // Done! Show stacked result cards for all completed items
+  if (completedItems.length > 0) {
+    progress.update({ stage: 'done', percent: 100, message: total > 1 ? `Batch upload complete (${completedItems.length} of ${total} files)` : 'Image uploaded and linked!' });
     progress.hide();
-    resultPanel.show(lastHotlink, lastCompressResult, lastPreviewUrl);
+    resultPanel.showAll(completedItems);
   }
 
   isProcessing = false;
