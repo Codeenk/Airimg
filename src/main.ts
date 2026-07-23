@@ -41,6 +41,7 @@ authBtn.addEventListener('click', async () => {
   } else {
     try {
       await initiateSignIn();
+      updateAuthUI();
     } catch (e) {
       showError(e as AppError);
     }

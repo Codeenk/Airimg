@@ -19,6 +19,7 @@ export interface UploadResult {
 export interface HotlinkResult {
   fileId: string;
   hotlinkUrl: string;
+  fallbackWorkerUrl: string;
   directDriveUrl: string;
 }
 

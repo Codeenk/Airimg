@@ -2,29 +2,12 @@ import type { AuthTokens } from '../types/index.js';
 import { storeTokens, getTokens, clearTokens } from './token-store.js';
 
 /** Google OAuth 2.0 Client ID — set via env var VITE_GOOGLE_CLIENT_ID */
-const CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID as string;
-const SCOPES = 'https://www.googleapis.com/auth/drive.file';
-const AUTH_ENDPOINT = 'https://accounts.google.com/o/oauth2/v2/auth';
-const TOKEN_ENDPOINT = 'https://oauth2.googleapis.com/token';
-const REDIRECT_URI = `${window.location.origin}/`;
+const CLIENT_ID = (import.meta.env.VITE_GOOGLE_CLIENT_ID as string) || '27431707625-pd03n480k1gffa4rq9pnt1gbvj2frj55.apps.googleusercontent.com';
 
-function generateCodeVerifier(): string {
-  const array = new Uint8Array(32);
-  crypto.getRandomValues(array);
-  return btoa(String.fromCharCode(...array))
-    .replace(/\+/g, '-')
-    .replace(/\//g, '_')
-    .replace(/=+$/, '');
-}
-
-async function generateCodeChallenge(verifier: string): Promise<string> {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(verifier);
-  const digest = await crypto.subtle.digest('SHA-256', data);
-  return btoa(String.fromCharCode(...new Uint8Array(digest)))
-    .replace(/\+/g, '-')
-    .replace(/\//g, '_')
-    .replace(/=+$/, '');
+declare global {
+  interface Window {
+    google?: any;
+  }
 }
 
 export async function initiateSignIn(): Promise<void> {
@@ -34,64 +17,53 @@ export async function initiateSignIn(): Promise<void> {
       message: 'Google Client ID is missing. Please set VITE_GOOGLE_CLIENT_ID in your .env file.',
     };
   }
-  const codeVerifier = generateCodeVerifier();
-  sessionStorage.setItem('airimg_pkce_verifier', codeVerifier);
-  const codeChallenge = await generateCodeChallenge(codeVerifier);
 
-  const params = new URLSearchParams({
-    client_id: CLIENT_ID,
-    redirect_uri: REDIRECT_URI,
-    response_type: 'code',
-    scope: SCOPES,
-    code_challenge: codeChallenge,
-    code_challenge_method: 'S256',
-    access_type: 'offline',
-    prompt: 'consent',
+  return new Promise((resolve, reject) => {
+    if (typeof window.google === 'undefined' || !window.google.accounts || !window.google.accounts.oauth2) {
+      reject({
+        code: 'NETWORK_ERROR',
+        message: 'Google Identity Services SDK failed to load. Please check your network connection or ad blocker.',
+      });
+      return;
+    }
+
+    try {
+      const client = window.google.accounts.oauth2.initTokenClient({
+        client_id: CLIENT_ID,
+        scope: 'https://www.googleapis.com/auth/drive.file',
+        callback: (response: any) => {
+          if (response.error) {
+            reject({
+              code: 'NOT_SIGNED_IN',
+              message: `Google Sign-In failed: ${response.error}`,
+            });
+            return;
+          }
+
+          if (response.access_token) {
+            const tokens: AuthTokens = {
+              accessToken: response.access_token,
+              expiresAt: Date.now() + (Number(response.expires_in) || 3600) * 1000,
+              scope: response.scope || 'https://www.googleapis.com/auth/drive.file',
+            };
+            storeTokens(tokens);
+            resolve();
+          }
+        },
+      });
+
+      client.requestAccessToken();
+    } catch (e) {
+      reject({
+        code: 'NOT_SIGNED_IN',
+        message: `Failed to initialize Google Sign-In: ${String(e)}`,
+      });
+    }
   });
-
-  window.location.href = `${AUTH_ENDPOINT}?${params.toString()}`;
 }
 
 export async function handleAuthCallback(): Promise<AuthTokens | null> {
-  const params = new URLSearchParams(window.location.search);
-  const code = params.get('code');
-  if (!code) return null;
-
-  const codeVerifier = sessionStorage.getItem('airimg_pkce_verifier');
-  if (!codeVerifier) return null;
-
-  // Clean the URL
-  window.history.replaceState({}, document.title, '/');
-  sessionStorage.removeItem('airimg_pkce_verifier');
-
-  const body = new URLSearchParams({
-    client_id: CLIENT_ID,
-    code,
-    code_verifier: codeVerifier,
-    grant_type: 'authorization_code',
-    redirect_uri: REDIRECT_URI,
-  });
-
-  const response = await fetch(TOKEN_ENDPOINT, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: body.toString(),
-  });
-
-  if (!response.ok) {
-    console.error('Token exchange failed:', await response.text());
-    return null;
-  }
-
-  const data = await response.json();
-  const tokens: AuthTokens = {
-    accessToken: data.access_token,
-    expiresAt: Date.now() + data.expires_in * 1000,
-    scope: data.scope,
-  };
-
-  storeTokens(tokens);
-  return tokens;
+  return getTokens();
 }
 
 export async function getValidAccessToken(): Promise<string | null> {

@@ -7,6 +7,7 @@ describe('hotlink-builder', () => {
       const result = buildHotlink('1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgV8');
       expect(result.fileId).toBe('1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgV8');
       expect(result.hotlinkUrl).toContain('/i/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgV8');
+      expect(result.fallbackWorkerUrl).toContain('airimg-worker.malandkar-sarvesh1.workers.dev/i/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgV8');
       expect(result.directDriveUrl).toContain('uc?export=view&id=1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgV8');
     });
 
