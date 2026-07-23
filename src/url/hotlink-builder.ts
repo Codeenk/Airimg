@@ -2,7 +2,7 @@ import { FILE_ID_REGEX } from '../types/index.js';
 import type { HotlinkResult } from '../types/index.js';
 
 /** Domain for hotlink — set via env var VITE_HOTLINK_DOMAIN */
-const HOTLINK_DOMAIN = (import.meta.env.VITE_HOTLINK_DOMAIN as string) || 'airimg-worker.malandkar-sarvesh1.workers.dev';
+const HOTLINK_DOMAIN = (import.meta.env.VITE_HOTLINK_DOMAIN as string) || 'img.airimg.airlabs.eu.cc';
 const WORKER_FALLBACK_DOMAIN = 'airimg-worker.malandkar-sarvesh1.workers.dev';
 
 export function buildHotlink(fileId: string): HotlinkResult {
